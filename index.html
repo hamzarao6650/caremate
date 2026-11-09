@@ -101,6 +101,9 @@
   .moment .say{color:var(--navy);background:var(--blue-soft);padding:10px 14px;border-radius:12px;font-size:15px}
   .moment .carer{grid-column:2/4;font-size:14px;color:var(--muted)}
   .moment.urgent .time{color:var(--coral)}
+  .what .tag{margin:0 0 0 8px;vertical-align:middle}
+  .tag.planned{color:#9A5B00;background:#FFF2D6}
+  .tag.exp{color:#9A5B00;background:#FFF2D6}
   @media(max-width:760px){.moment{grid-template-columns:1fr}.moment .carer{grid-column:auto}}
 
   /* privacy */
@@ -225,7 +228,7 @@
   <div class="wrap">
     <div class="eyebrow">The problem</div>
     <h2>Millions are growing old at home, alone.</h2>
-    <p class="lead">Older adults want to stay independent, but there are not enough carers to watch over everyone, at home or in care.</p>
+    <p class="lead">Older adults want to stay independent, but there are not enough caregivers to watch over everyone, at home or in care.</p>
     <div class="stats">
       <div class="stat"><b>75%</b><p>of adults 50 and over want to stay in their own home as they age.</p></div>
       <div class="stat"><b>28%</b><p>of adults 65 and over who live at home live alone.</p></div>
@@ -245,9 +248,9 @@
     <p class="lead">One CareMate brain brings together a camera that reads how a person is, a memory of who they are and a voice to talk with them.</p>
     <div class="grid4">
       <div class="card"><div class="ic">&#128065;</div><h3>Reads how they are</h3><p>From an ordinary camera it tracks activity, posture against the person's own baseline, facial expression and who is in the room.</p><span class="tag">Live today</span></div>
-      <div class="card"><div class="ic">&#10084;</div><h3>Pulse from the camera</h3><p>Tiny changes in skin colour become a heart rate, with no wearable. Each reading is compared with that person's own 7-day range.</p><span class="tag">Live today</span></div>
+      <div class="card"><div class="ic">&#10084;</div><h3>Pulse from the camera</h3><p>Tiny changes in skin color become a heart rate, with no wearable. Each reading is compared with that person's own 7-day range. Readings are experimental and not clinically validated.</p><span class="tag exp">Live today, experimental</span></div>
       <div class="card"><div class="ic">&#128218;</div><h3>Remembers each person</h3><p>Every chat updates a private memory of likes, habits and health notes. Staff can read, correct and export the notes.</p><span class="tag">Live today</span></div>
-      <div class="card"><div class="ic">&#128172;</div><h3>Speaks up first</h3><p>CareMate starts the conversation when something changes, so nobody needs a screen. Carer alerts and fall detection come next.</p><span class="tag">Chat live, alerts next</span></div>
+      <div class="card"><div class="ic">&#128172;</div><h3>Speaks up first</h3><p>CareMate starts the conversation when something changes, so nobody needs a screen. Caregiver alerts and fall detection come next.</p><span class="tag">Chat live, alerts next</span></div>
     </div>
   </div>
 </section>
@@ -256,11 +259,11 @@
   <div class="wrap">
     <div class="eyebrow">A day with CareMate</div>
     <h2>Small changes get noticed early.</h2>
-    <p class="lead">An illustrative day for Margaret, who lives alone and sees her agency carer, Sarah, three times a week.</p>
+    <p class="lead">An illustrative day for Margaret, who lives alone and sees her agency caregiver, Sarah, three times a week.</p>
     <div class="day">
       <div class="moment"><div class="time">08:10</div><div class="what">Walking slower than usual</div><div class="say">"Morning, Margaret. Is your knee stiff today?"</div><div class="carer">Sarah sees a note in the daily summary. No alarm.</div></div>
       <div class="moment"><div class="time">14:30</div><div class="what">Pulse above her usual range</div><div class="say">"You seem tense. Shall we take a few slow breaths?"</div><div class="carer">Sarah is asked to check in today.</div></div>
-      <div class="moment urgent"><div class="time">17:05</div><div class="what">On the floor, no answer</div><div class="say">"Margaret, help is on the way. I am calling Sarah."</div><div class="carer">Sarah gets an urgent alert. Fall alerts and the carer app are on the roadmap, not in today's prototype.</div></div>
+      <div class="moment urgent"><div class="time">17:05</div><div class="what">On the floor, no answer <span class="tag planned">Planned</span></div><div class="say">"Margaret, help is on the way. I am calling Sarah."</div><div class="carer">Planned: Sarah gets an urgent alert. Fall detection, urgent alerts and the caregiver app are on the roadmap, not in today's prototype.</div></div>
     </div>
   </div>
 </section>
@@ -268,11 +271,11 @@
 <section id="privacy">
   <div class="wrap">
     <div class="eyebrow">Privacy</div>
-    <h2>Most of what it sees stays in the room.</h2>
-    <p class="lead">Video is analysed on the device. Only small pieces of information go to the server, and visitors CareMate does not recognise leave no trace.</p>
+    <h2>Video is analyzed in the room. Only a few frames leave it.</h2>
+    <p class="lead">Pose, expression, identity and pulse are worked out on the device. A few small frames a minute go to a cloud vision model for a one-line scene description, along with chat messages and memory notes. Visitors CareMate does not recognize leave no trace.</p>
     <div class="two">
       <div class="panel"><h3>Processed on the device</h3><ul><li>Body pose and face mesh</li><li>Facial expression</li><li>Face recognition</li><li>Heart rate and its history</li><li>Activity and posture</li></ul></div>
-      <div class="panel server"><h3>Sent to the server</h3><ul><li>A face signature of 512 numbers, never a photo</li><li>A few small frames a minute, for a one-line scene description</li><li>Chat messages and each person's memory notes</li></ul></div>
+      <div class="panel server"><h3>Sent to the server</h3><ul><li>A face signature of 512 numbers, never a photo</li><li>A few small frames a minute, sent to a cloud vision model for a one-line scene description</li><li>Chat messages and each person's memory notes</li></ul></div>
     </div>
   </div>
 </section>
@@ -283,7 +286,7 @@
     <h2>Built for the people who provide care.</h2>
     <div class="who-grid">
       <div class="card"><h3>Care homes</h3><p>A second pair of eyes in every room, on the webcams and tablets you already have, so staff can focus where they are needed most.</p></div>
-      <div class="card"><h3>Home-care agencies</h3><p>Know how clients are doing between visits. Carers get short updates and a daily summary, not a video feed.</p></div>
+      <div class="card"><h3>Home-care agencies</h3><p>Know how clients are doing between visits. Caregivers get short updates and a daily summary, not a video feed.</p></div>
       <div class="card"><h3>Device makers</h3><p>Build CareMate into cameras, sensors, speakers and robots. We are open to licensing partnerships.</p></div>
     </div>
   </div>
@@ -296,7 +299,7 @@
     <p class="lead">We are clear about what exists today. Everything after the webcam prototype is planned, not yet built.</p>
     <div class="road">
       <div class="stage now"><div class="when">Now</div><h3>Webcam prototype</h3><ul><li>Activity, posture and mood</li><li>Heart rate by camera</li><li>Face ID and memory</li><li>Chat that speaks up first</li><li>Live demo online</li></ul></div>
-      <div class="stage next"><div class="when">Next</div><h3>Pilot-ready platform</h3><ul><li>Carer app and alerts</li><li>Fall detection</li><li>Many residents, one view</li><li>Room cameras and home sensors</li><li>Smart-speaker voice</li></ul></div>
+      <div class="stage next"><div class="when">Next</div><h3>Pilot-ready platform</h3><ul><li>Caregiver app and alerts</li><li>Fall detection</li><li>Many residents, one view</li><li>Room cameras and home sensors</li><li>Smart-speaker voice</li></ul></div>
       <div class="stage later"><div class="when">Later</div><h3>Care platform</h3><ul><li>Care robot partners</li><li>Care-record integration</li><li>Home-care rollout</li><li>Outcome studies</li></ul></div>
     </div>
   </div>
@@ -309,12 +312,12 @@
     <div class="faq">
       <details><summary>Is CareMate a medical device?</summary><p>No. CareMate's readings, including heart rate, are wellness signals. They are not medical measurements and have not yet been clinically validated. CareMate does not diagnose or treat any condition. In an emergency, call 911.</p></details>
       <details><summary>Do we need to buy special hardware?</summary><p>No. The prototype runs in a web browser on an ordinary laptop webcam. CareMate is software designed to run on the cameras, tablets and speakers a care provider already has, with room cameras and sensors planned next.</p></details>
-      <details><summary>Does CareMate record or stream video?</summary><p>Video is analysed on the device. CareMate sends only a 512-number face signature (never a photo), a few small frames a minute for a one-line scene description, and chat messages and memory notes. Carers receive short updates and a daily summary, not a video feed.</p></details>
-      <details><summary>Does CareMate detect falls today?</summary><p>Today the prototype reads activity, including when a person is lying down, as well as posture, emotion and pulse, and it talks with the person. Fall detection, urgent alerts and the carer app are on the near-term roadmap.</p></details>
+      <details><summary>Does CareMate record or stream video?</summary><p>Video is analyzed on the device and never streamed. CareMate sends only a 512-number face signature (never a photo), a few small frames a minute for a one-line scene description, and chat messages and memory notes. Caregivers receive short updates and a daily summary, not a video feed.</p></details>
+      <details><summary>Does CareMate detect falls today?</summary><p>Today the prototype reads activity, including when a person is lying down, as well as posture, emotion and pulse, and it talks with the person. Fall detection, urgent alerts and the caregiver app are on the near-term roadmap.</p></details>
       <details><summary>What about bathrooms and private spaces?</summary><p>Cameras do not belong everywhere. For places like bathrooms, the plan is to use non-camera sensors instead.</p></details>
-      <details><summary>How does CareMate remember each person?</summary><p>CareMate keeps a separate memory for every person it knows, built from their conversations. Face recognition picks whose memory to use, and unrecognised visitors get no profile. Memories are plain notes that staff can read, search, correct and export.</p></details>
+      <details><summary>How does CareMate remember each person?</summary><p>CareMate keeps a separate memory for every person it knows, built from their conversations. Face recognition picks whose memory to use, and unrecognized visitors get no profile. Memories are plain notes that staff can read, search, correct and export.</p></details>
       <details><summary>Is CareMate HIPAA compliant?</summary><p>Not yet. CareMate is a prototype. A security review is part of the pilot-ready stage, and a HIPAA-ready stack is planned before wider rollout.</p></details>
-      <details><summary>How can our organisation try it?</summary><p>We are looking for care homes and home-care agencies to run a 90-day pilot on the devices they already have, measuring response times, incidents and staff hours against their own baseline. Use the CareMate assistant on this page to request a pilot.</p></details>
+      <details><summary>How can our organization try it?</summary><p>We are looking for care homes and home-care agencies to run a 90-day pilot on the devices they already have, measuring response times, incidents and staff hours against their own baseline. Use the CareMate assistant on this page or email <a href="mailto:hliaqat@smu.edu">hliaqat@smu.edu</a> to request a pilot.</p></details>
     </div>
   </div>
 </section>
@@ -325,7 +328,7 @@
     <h2>Founding team</h2>
     <p class="lead">We worked together before business school. Now we are building CareMate.</p>
     <div class="team">
-      <div class="person"><img class="avatar" src="team-hamza.jpg" alt="Hamza Liaqat" width="72" height="72" loading="lazy"><h3>Hamza Liaqat</h3><p>Hamza is an MBA candidate at SMU Cox School of Business, graduating in 2027, and a Forté Fellow. He spent nearly five years at NaviGait, an AI and robotics platform for dementia care, first as Lead Business Analyst and then as Lead Technical Product Manager on the founding team. He ran customer discovery with clinicians and caregivers, secured five strategic and university partnerships, and led deployments with UC Irvine, Case Western Reserve University, the University of Notre Dame and Judson.</p></div>
+      <div class="person"><img class="avatar" src="team-hamza.jpg" alt="Hamza Liaqat" width="72" height="72" loading="lazy"><h3>Hamza Liaqat</h3><p>Hamza is an MBA candidate at SMU Cox School of Business, graduating in 2027, and a Forté Fellow. He spent nearly five years at NaviGait, an AI and robotics platform for dementia care, first as Lead Business Analyst and then as Lead Technical Product Manager on the founding team. At NaviGait he ran customer discovery with clinicians and caregivers, secured five strategic and university partnerships, and led deployments with UC Irvine, Case Western Reserve University, the University of Notre Dame and Judson.</p></div>
       <div class="person"><img class="avatar" src="team-seemal.jpg" alt="Seemal Muzaffar" width="72" height="72" loading="lazy"><h3>Seemal Muzaffar</h3><p>Seemal is an MBA candidate at Stanford Graduate School of Business, graduating in 2027. She studied at LUMS in Lahore and earned a Master of Information Systems Management at Carnegie Mellon as a Fulbright Scholar. As a data scientist, she built models that changed how customers were served. As a technical product manager, she helped take a robot companion for people living with dementia from user interviews to clinical trials, and at McKinsey she helped a large engineering organization scale agentic AI.</p></div>
       <div class="person"><img class="avatar" src="team-yahyaa.jpg" alt="Muhammad Yahyaa Zeeshan" width="72" height="72" loading="lazy"><h3>Muhammad Yahyaa Zeeshan <span>(Technology Advisor)</span></h3><p>Yahyaa is a product manager with a degree in Business Management and Technology from Information Technology University Lahore (2021). He works in age tech, running market research and writing user requirements for a recovery platform that helps older adults regain mobility after falls and injuries, then turning them into user stories, user flows and prototype wireframes with Agile teams. He advises the CareMate team on technology and product design.</p></div>
     </div>
@@ -337,7 +340,7 @@
     <div class="band">
       <div>
         <h2>Run a 90-day pilot with CareMate.</h2>
-        <p>Tell us about your care home or agency and we will be in touch. Open the CareMate assistant in the bottom-right corner and choose "Request a pilot".</p>
+        <p>Tell us about your care home or agency and we will be in touch. Open the CareMate assistant in the bottom-right corner and choose "Request a pilot", or email <a href="mailto:hliaqat@smu.edu" style="color:#fff;text-decoration:underline">hliaqat@smu.edu</a>.</p>
       </div>
       <div class="cta">
         <a class="btn btn-primary pilot-link" href="#pilot">Request a pilot</a>
@@ -352,6 +355,7 @@
     <div class="logo"><span class="mark"><span></span></span>CareMate</div>
     <p>So no one who lives alone goes unseen.</p>
     <p>CareMate is an early-stage prototype. Its readings are wellness signals, not medical measurements, and it does not replace professional care. In an emergency, call 911. Margaret and Sarah are illustrative personas.</p>
+    <p>Contact: <a href="mailto:hliaqat@smu.edu" style="text-decoration:underline">hliaqat@smu.edu</a></p>
     <p>&copy; 2026 CareMate</p>
   </div>
 </footer>
