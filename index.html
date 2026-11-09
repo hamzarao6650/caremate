@@ -139,6 +139,15 @@
   .band .btn-ghost{background:rgba(255,255,255,.12);color:#fff}
   @media(max-width:820px){.band{grid-template-columns:1fr;padding:36px}}
 
+  /* team */
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:start}
+  .person{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:#fff}
+  .person .avatar{width:56px;height:56px;font-size:19px;margin-bottom:16px}
+  .person h3{font-size:18px;margin-bottom:10px}
+  .person h3 span{display:block;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-top:2px}
+  .person p{color:var(--slate);font-size:15px}
+  @media(max-width:900px){.team{grid-template-columns:1fr}}
+
   footer{padding:40px 0 56px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
   footer .wrap{display:grid;gap:10px}
 </style>
@@ -153,6 +162,7 @@
       <a href="#privacy">Privacy</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#faq">FAQ</a>
+      <a href="#team">Team</a>
     </div>
     <a class="btn btn-primary pilot-link" href="#pilot">Request a pilot</a>
   </div>
@@ -284,6 +294,19 @@
       <details><summary>How does CareMate remember each person?</summary><p>CareMate keeps a separate memory for every person it knows, built from their conversations. Face recognition picks whose memory to use, and unrecognised visitors get no profile. Memories are plain notes that staff can read, search, correct and export.</p></details>
       <details><summary>Is CareMate HIPAA compliant?</summary><p>Not yet. CareMate is a prototype. A security review is part of the pilot-ready stage, and a HIPAA-ready stack is planned before wider rollout.</p></details>
       <details><summary>How can our organisation try it?</summary><p>We are looking for care homes and home-care agencies to run a 90-day pilot on the devices they already have, measuring response times, incidents and staff hours against their own baseline. Use the CareMate assistant on this page to request a pilot.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="eyebrow">Who we are</div>
+    <h2>Founding team</h2>
+    <p class="lead">We worked together before business school. Now we are building CareMate.</p>
+    <div class="team">
+      <div class="person"><div class="avatar">HL</div><h3>Hamza Liaqat</h3><p>Hamza is an MBA candidate at SMU Cox School of Business, graduating in 2027, and a Forté Fellow. He spent nearly five years at NaviGait, an AI and robotics platform for dementia care, first as Lead Business Analyst and then as Lead Technical Product Manager on the founding team. He ran customer discovery with clinicians and caregivers, secured five strategic and university partnerships, and led deployments with Mayo Clinic, UC Irvine, Case Western Reserve University, the University of Notre Dame and Judson.</p></div>
+      <div class="person"><div class="avatar">SM</div><h3>Seemal Muzaffar</h3><p>Seemal is an MBA candidate at Stanford Graduate School of Business, graduating in 2027. Before Stanford, she worked with Hamza and Yahyaa for more than a year.</p></div>
+      <div class="person"><div class="avatar">YZ</div><h3>Muhammad Yahyaa Zeeshan <span>(Technology Advisor)</span></h3><p>Yahyaa builds AI products. He advises the team on CareMate's technology: how it reads the room, remembers each person and holds a conversation.</p></div>
     </div>
   </div>
 </section>
