@@ -69,6 +69,11 @@
   .bubble.me{background:var(--bg-soft);border-radius:14px 14px 4px 14px;justify-self:end;color:var(--ink)}
   .caption{font-size:12px;color:var(--muted);text-align:center;padding:0 18px 16px}
 
+  /* demo film */
+  .film{margin-top:36px;border-radius:24px;overflow:hidden;background:#0E1B33;box-shadow:0 30px 60px -30px rgba(33,53,78,.45);aspect-ratio:848/478}
+  .film video{display:block;width:100%;height:100%;object-fit:cover}
+  .film-note{font-size:13px;color:var(--muted);margin-top:14px}
+
   /* problem */
   .soft{background:var(--bg-soft)}
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
@@ -158,6 +163,7 @@
   <div class="wrap">
     <a class="logo" href="#top" aria-label="CareMate home"><span class="mark"><span></span></span>CareMate</a>
     <div class="links">
+      <a href="#demo">Demo</a>
       <a href="#how">How it works</a>
       <a href="#privacy">Privacy</a>
       <a href="#roadmap">Roadmap</a>
@@ -199,6 +205,21 @@
     </div>
   </div>
 </header>
+
+<section id="demo">
+  <div class="wrap">
+    <div class="eyebrow">Demo film</div>
+    <h2>See CareMate through one day.</h2>
+    <p class="lead">A two-minute film of a day with CareMate, following Margaret from morning to evening.</p>
+    <div class="film">
+      <video controls playsinline preload="metadata" poster="caremate-demo-poster.jpg" aria-label="CareMate demo film">
+        <source src="caremate-demo.mp4" type="video/mp4">
+        Your browser cannot play this video. <a href="caremate-demo.mp4">Download the CareMate demo film</a>.
+      </video>
+    </div>
+    <p class="film-note">Concept film. Today's prototype runs on a laptop webcam; the room devices shown are planned. Margaret is an illustrative persona.</p>
+  </div>
+</section>
 
 <section class="soft" id="problem">
   <div class="wrap">
