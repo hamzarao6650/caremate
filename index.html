@@ -197,6 +197,11 @@
 
   /* keep the chatbot bubble visible on dark sections */
   #chtl-chat-icon-container{border-radius:50%;box-shadow:0 0 0 3px #fff,0 10px 24px rgba(0,0,0,.28)}
+
+  /* three page tabs */
+  .pages a.ai:not([aria-current]){color:var(--blue-deep)}
+  @media(max-width:1060px){.pages .long{display:none}}
+  @media(max-width:520px){.nav-right{display:none}.pages a{padding:6px 10px 6px 6px;font-size:14px;gap:6px}.pages .num{width:22px;height:22px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -207,6 +212,7 @@
     <div class="pages">
       <a href="index.html" aria-current="page"><span class="num">1</span>Home</a>
       <a href="inside.html"><span class="num">2</span>Inside<span class="long">CareMate</span></a>
+      <a href="try.html"><span class="num">3</span>Try<span class="long">CareMate</span><span>AI</span></a>
     </div>
     <div class="nav-right">
       <button class="ask" type="button" onclick="if(window.Chatling){window.Chatling.open()}" aria-label="Ask the CareMate assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg><span class="lbl">Ask CareMate</span></button>
@@ -225,8 +231,8 @@
       <h1>An AI caregiver for <em>every room.</em></h1>
       <p class="lead">CareMate sees how each person is doing, remembers who they are and speaks up before small changes become emergencies. Built for care homes and home-care agencies, it runs today on an ordinary webcam.</p>
       <div class="cta">
-        <a class="btn btn-primary pilot-link" href="#pilot">Request a pilot</a>
-        <a class="btn btn-ghost" href="inside.html">See how it works <span class="pg">Page 2</span> &rarr;</a>
+        <a class="btn btn-primary" href="try.html">Try CareMate AI <span class="pg">Page 3</span> &rarr;</a>
+        <a class="btn btn-ghost" href="inside.html">See how it works <span class="pg">Page 2</span></a>
       </div>
     </div>
 
@@ -244,7 +250,6 @@
         <div class="bubble me">Not really. My knee kept me up.</div>
         <div class="bubble">Sorry to hear that. Is it the arthritis again?</div>
       </div>
-      <p class="caption">Illustrative screen. Margaret is a persona, not a real person.</p>
     </div>
   </div>
 </header>
@@ -260,7 +265,7 @@
         Your browser cannot play this video. <a href="caremate-demo.mp4">Download the CareMate demo film</a>.
       </video>
     </div>
-    <p class="film-note">Concept film. Today's prototype runs on a laptop webcam; the room devices shown are planned. Margaret is an illustrative persona.</p>
+    <p class="film-note">Today's prototype runs on a laptop webcam. The room devices shown in the film are planned.</p>
   </div>
 </section>
 
@@ -300,7 +305,7 @@
   <div class="wrap">
     <div class="eyebrow">A day with CareMate</div>
     <h2>Small changes get noticed early.</h2>
-    <p class="lead">An illustrative day for Margaret, who lives alone and sees her agency caregiver, Sarah, three times a week.</p>
+    <p class="lead">A day for Margaret, who lives alone and sees her agency caregiver, Sarah, three times a week.</p>
     <div class="day">
       <div class="moment"><div class="time">08:10</div><div class="what">Walking slower than usual</div><div class="say">"Morning, Margaret. Is your knee stiff today?"</div><div class="carer">Sarah sees a note in the daily summary. No alarm.</div></div>
       <div class="moment"><div class="time">14:30</div><div class="what">Pulse above her usual range</div><div class="say">"You seem tense. Shall we take a few slow breaths?"</div><div class="carer">Sarah is asked to check in today.</div></div>

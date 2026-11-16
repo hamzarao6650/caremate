@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Try CareMate AI | Shift handoff assistant</title>
+<meta name="description" content="Paste a care home shift note and CareMate AI returns a structured handoff, flags changes from each resident's baseline and drafts family updates. Fictional residents only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#0A84FF; --blue-deep:#0050C8; --blue-soft:#EAF4FF;
+    --ink:#1D2939; --slate:#425368; --muted:#6B7686;
+    --line:#E5E5EA; --bg:#FFFFFF; --bg-soft:#F5F5F7;
+    --green:#30D158; --coral:#FF6B61; --navy:#21354E;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+  h1,h2,h3{line-height:1.15;letter-spacing:-.02em;color:var(--ink)}
+  h2{font-size:clamp(28px,4vw,42px);font-weight:800;margin:10px 0 14px}
+  .lead{font-size:18px;color:var(--slate);max-width:640px}
+  section{padding:88px 0}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px;transition:transform .15s,background .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue-deep)}
+  .btn-ghost{background:var(--bg-soft);color:var(--ink)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .mark{width:30px;height:30px;border-radius:9px;background:var(--blue);display:grid;place-items:center}
+  .mark span{display:block;width:14px;height:3px;border-radius:2px;background:#fff;box-shadow:0 -5px 0 #fff,0 5px 0 #fff}
+  .links{display:flex;gap:28px;font-size:15px;color:var(--slate);font-weight:500}
+  .links a:hover{color:var(--ink)}
+  @media(max-width:860px){.links{display:none}}
+
+  /* hero */
+  .hero{padding:72px 0 88px;background:radial-gradient(1200px 500px at 85% -10%,var(--blue-soft),transparent 60%)}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero h1{font-size:clamp(40px,6vw,64px);font-weight:800;margin:14px 0 18px}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero .lead{margin-bottom:30px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .note{font-size:13px;color:var(--muted);margin-top:18px}
+  @media(max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+  .monitor{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 60px -30px rgba(33,53,78,.35);overflow:hidden}
+  .mon-top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .live{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+  .live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(48,209,88,.18)}
+  .mon-body{padding:18px;display:grid;gap:12px}
+  .who{display:flex;align-items:center;gap:12px}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#9FCEFF,var(--blue));color:#fff;display:grid;place-items:center;font-weight:700}
+  .who b{display:block}
+  .who small{color:var(--muted)}
+  .readings{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .reading{background:var(--bg-soft);border-radius:14px;padding:12px 14px}
+  .reading small{display:block;font-size:12px;color:var(--muted)}
+  .reading b{font-size:17px}
+  .bubble{background:var(--blue-soft);border-radius:14px 14px 14px 4px;padding:11px 14px;font-size:14px;color:var(--navy)}
+  .bubble.me{background:var(--bg-soft);border-radius:14px 14px 4px 14px;justify-self:end;color:var(--ink)}
+  .caption{font-size:12px;color:var(--muted);text-align:center;padding:0 18px 16px}
+
+  /* demo film */
+  .film{margin-top:36px;border-radius:24px;overflow:hidden;background:#0E1B33;box-shadow:0 30px 60px -30px rgba(33,53,78,.45);aspect-ratio:848/478}
+  .film video{display:block;width:100%;height:100%;object-fit:cover}
+  .film-note{font-size:13px;color:var(--muted);margin-top:14px}
+
+  /* problem */
+  .soft{background:var(--bg-soft)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .stat{background:#fff;border-radius:var(--radius);padding:28px;border:1px solid var(--line)}
+  .stat b{display:block;font-size:44px;font-weight:800;color:var(--blue);letter-spacing:-.03em;line-height:1}
+  .stat p{color:var(--slate);margin-top:10px}
+  .src{font-size:12px;color:var(--muted);margin-top:18px}
+  @media(max-width:820px){.stats{grid-template-columns:1fr}}
+
+  /* features */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+  .card{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:#fff}
+  .card .ic{width:44px;height:44px;border-radius:12px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-size:22px;margin-bottom:16px}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{color:var(--slate);font-size:15px}
+  .tag{display:inline-block;margin-top:12px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg-soft);padding:4px 10px;border-radius:999px}
+  @media(max-width:980px){.grid4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid4{grid-template-columns:1fr}}
+
+  /* day */
+  .day{display:grid;gap:16px;margin-top:40px}
+  .moment{display:grid;grid-template-columns:110px 1fr 1fr;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px}
+  .time{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .moment .what{font-weight:600}
+  .moment .say{color:var(--navy);background:var(--blue-soft);padding:10px 14px;border-radius:12px;font-size:15px}
+  .moment .carer{grid-column:2/4;font-size:14px;color:var(--muted)}
+  .moment.urgent .time{color:var(--coral)}
+  .what .tag{margin:0 0 0 8px;vertical-align:middle}
+  .tag.planned{color:#9A5B00;background:#FFF2D6}
+  .tag.exp{color:#9A5B00;background:#FFF2D6}
+  @media(max-width:760px){.moment{grid-template-columns:1fr}.moment .carer{grid-column:auto}}
+
+  /* privacy */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+  .panel{border-radius:var(--radius);padding:30px;border:1px solid var(--line);background:#fff}
+  .panel h3{font-size:19px;margin-bottom:14px}
+  .panel ul{list-style:none;display:grid;gap:10px}
+  .panel li{display:flex;gap:10px;color:var(--slate)}
+  .panel li:before{content:"";flex:none;width:8px;height:8px;border-radius:50%;margin-top:9px;background:var(--green)}
+  .panel.server li:before{background:var(--blue)}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+
+  /* who */
+  .who-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:40px}
+  @media(max-width:900px){.who-grid{grid-template-columns:1fr}}
+
+  /* roadmap */
+  .road{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .stage{border-radius:var(--radius);padding:26px;background:#fff;border:1px solid var(--line)}
+  .stage .when{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+  .stage.now .when{color:var(--green)}
+  .stage.next .when{color:var(--blue)}
+  .stage.later .when{color:var(--muted)}
+  .stage h3{font-size:19px;margin:8px 0 12px}
+  .stage ul{padding-left:18px;color:var(--slate);display:grid;gap:6px}
+  @media(max-width:860px){.road{grid-template-columns:1fr}}
+
+  /* faq */
+  .faq{margin-top:36px;display:grid;gap:12px;max-width:820px}
+  details{border:1px solid var(--line);border-radius:16px;padding:18px 22px;background:#fff}
+  summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";color:var(--blue);font-size:22px;line-height:1}
+  details[open] summary:after{content:"\2013"}
+  details p{color:var(--slate);margin-top:10px}
+
+  /* pilot band */
+  .band{background:var(--navy);color:#fff;border-radius:28px;padding:56px;display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center}
+  .band h2{color:#fff}
+  .band p{color:#C9D3E0}
+  .band .btn-ghost{background:rgba(255,255,255,.12);color:#fff}
+  @media(max-width:820px){.band{grid-template-columns:1fr;padding:36px}}
+
+  /* team */
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:start}
+  .person{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:#fff}
+  .person .avatar{width:72px;height:72px;font-size:19px;margin-bottom:16px;object-fit:cover;display:block;background:var(--blue-soft)}
+  .person h3{font-size:18px;margin-bottom:10px}
+  .person h3 span{display:block;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-top:2px}
+  .person p{color:var(--slate);font-size:15px}
+  @media(max-width:900px){.team{grid-template-columns:1fr}}
+
+  footer{padding:40px 0 56px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+  footer .wrap{display:grid;gap:10px}
+
+  /* inside page */
+  .sub{padding:64px 0 72px;background:radial-gradient(1100px 460px at 90% -10%,var(--blue-soft),transparent 60%)}
+  .sub h1{font-size:clamp(36px,5.2vw,56px);font-weight:800;margin:14px 0 18px;max-width:880px}
+  .sub h1 em{font-style:normal;color:var(--blue)}
+  .back{display:inline-block;font-size:14px;font-weight:600;color:var(--blue);margin-bottom:22px}
+  .back:hover{text-decoration:underline}
+  .jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  .jump a{font-size:14px;font-weight:600;color:var(--slate);background:#fff;border:1px solid var(--line);padding:8px 14px;border-radius:999px}
+  .jump a:hover{border-color:var(--blue);color:var(--blue)}
+
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px;counter-reset:step}
+  .flow .card{position:relative;padding-top:30px}
+  .flow .card:before{counter-increment:step;content:counter(step);position:absolute;top:-14px;left:22px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+  .flow .card ul{margin-top:10px;padding-left:18px;color:var(--slate);font-size:14px;display:grid;gap:4px}
+  .flow .eg{margin-top:12px;font-size:14px;color:var(--navy);background:var(--blue-soft);border-radius:12px;padding:9px 12px}
+  @media(max-width:980px){.flow{grid-template-columns:repeat(2,1fr);row-gap:30px}}
+  @media(max-width:560px){.flow{grid-template-columns:1fr}}
+
+  .pulse{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:stretch;margin-top:40px}
+  .pstep{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .pstep small{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+  .pstep h3{font-size:18px;margin-bottom:8px}
+  .pstep p{color:var(--slate);font-size:15px}
+  .arrow{align-self:center;color:var(--blue);font-size:26px;font-weight:700}
+  .wave{display:block;width:100%;height:46px;margin-top:14px}
+  @media(max-width:900px){.pulse{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center}}
+
+  .timeline{display:grid;gap:14px;margin-top:40px;max-width:900px}
+  .phase{display:grid;grid-template-columns:150px 1fr;gap:22px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;align-items:start}
+  .phase .when{font-size:15px;font-weight:800;color:var(--blue);letter-spacing:-.01em}
+  .phase h3{font-size:18px;margin-bottom:6px}
+  .phase p{color:var(--slate);font-size:15px}
+  @media(max-width:700px){.phase{grid-template-columns:1fr;gap:6px}}
+  .flag{display:inline-block;margin-top:22px;font-size:13px;color:#9A5B00;background:#FFF2D6;padding:8px 14px;border-radius:12px}
+
+  .measures{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .measure{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .measure b{display:block;font-size:22px;font-weight:800;color:var(--blue);letter-spacing:-.02em;margin-bottom:8px}
+  .measure p{color:var(--slate);font-size:15px}
+  @media(max-width:820px){.measures{grid-template-columns:1fr}}
+
+  .roles{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  .roles .card small{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  @media(max-width:980px){.roles{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.roles{grid-template-columns:1fr}}
+
+  .vs{display:grid;gap:12px;margin-top:40px;max-width:900px}
+  .vs-row{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+  .vs-row div{padding:18px 22px;font-size:15px}
+  .vs-row .them{color:var(--muted);border-right:1px solid var(--line)}
+  .vs-row .us{color:var(--ink);font-weight:600;background:var(--blue-soft)}
+  .vs-row small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+  .vs-row .them small{color:var(--muted)}
+  .vs-row .us small{color:var(--blue)}
+  @media(max-width:640px){.vs-row{grid-template-columns:1fr}.vs-row .them{border-right:0;border-bottom:1px solid var(--line)}}
+
+  /* page tabs: make the pages obvious */
+  .pages{display:flex;gap:4px;background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:4px}
+  .pages a{display:inline-flex;align-items:center;gap:8px;padding:7px 16px 7px 8px;border-radius:999px;font-weight:600;font-size:15px;color:var(--slate);white-space:nowrap}
+  .pages .num{width:24px;height:24px;border-radius:50%;background:#fff;color:var(--blue);font-size:12px;font-weight:700;display:grid;place-items:center;border:1px solid var(--line)}
+  .pages a[aria-current=page]{background:var(--blue);color:#fff}
+  .pages a[aria-current=page] .num{background:#fff;color:var(--blue);border-color:#fff}
+  .pages a:not([aria-current]):hover{background:#fff;color:var(--ink)}
+  .nav-right{display:flex;align-items:center;gap:10px}
+  .ask{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font:600 15px Inter,system-ui,sans-serif;color:var(--blue-deep);background:var(--blue-soft);padding:11px 16px;border-radius:999px}
+  .ask:hover{background:#D6E9FF}
+  .ask svg{width:18px;height:18px}
+  .onpage{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:24px;font-size:14px}
+  .onpage span{font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:12px;margin-right:4px}
+  .onpage a{color:var(--slate);font-weight:600;padding:5px 12px;border-radius:999px;border:1px dashed #C9CED6}
+  .onpage a:before{content:"\2193  ";color:var(--blue)}
+  .onpage a:hover{border-color:var(--blue);color:var(--blue)}
+  .pg{display:inline-block;margin-left:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--blue);color:#fff;padding:3px 8px;border-radius:999px}
+  .btn-primary .pg{background:rgba(255,255,255,.25)}
+  @media(max-width:980px){nav .btn-proto{display:none}}
+  @media(max-width:640px){.logo .word{display:none}.ask .lbl{display:none}.ask{padding:10px 12px}.pages a{padding:6px 12px 6px 6px;font-size:14px}}
+  @media(max-width:400px){.pages .long{display:none}}
+
+  /* page 2 header: a different look so it reads as a new page */
+  .sub{background:var(--navy);color:#C9D3E0;padding:44px 0 64px}
+  .sub h1{color:#fff}
+  .sub h1 em{color:#7CC0FF}
+  .sub .lead{color:#C9D3E0}
+  .sub .eyebrow{color:#7CC0FF}
+  .sub .onpage span{color:#9FB0C4}
+  .sub .onpage a{color:#fff;border-color:rgba(255,255,255,.3)}
+  .sub .onpage a:before{color:#7CC0FF}
+  .sub .onpage a:hover{border-color:#7CC0FF;color:#7CC0FF}
+  .crumbs{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:600;margin-bottom:22px;color:#9FB0C4}
+  .crumbs a{color:#fff;border-bottom:1px solid rgba(255,255,255,.4)}
+  .crumbs a:hover{border-color:#fff}
+  .crumbs b{color:#7CC0FF;font-weight:600}
+  .sub .cta{margin-top:26px}
+  .sub .btn-ghost{background:rgba(255,255,255,.12);color:#fff}
+  .prevnext{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+  .prevnext a{flex:1 1 260px;display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 20px;color:var(--ink);font-weight:700}
+  .prevnext a small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+  .prevnext a:hover{border-color:var(--blue)}
+
+  /* section tabs: smaller, sticky, under the page tabs */
+  .subnav{position:sticky;top:65px;z-index:19;background:rgba(250,250,252,.96);border-bottom:1px solid var(--line)}
+  .subnav .wrap{display:flex;align-items:center;gap:18px;height:44px}
+  .sn-label{flex:none;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .subnav .track{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;height:100%;align-items:stretch}
+  .subnav .track::-webkit-scrollbar{display:none}
+  .subnav .track a{flex:none;display:flex;align-items:center;padding:0 12px;font:600 13.5px/1 Inter,system-ui,sans-serif;letter-spacing:.02em;color:var(--slate);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+  .subnav .track a:hover{color:var(--blue)}
+  .subnav .track a.on{color:var(--blue);border-bottom-color:var(--blue);background:rgba(10,132,255,.06)}
+  section[id],header[id]{scroll-margin-top:117px}
+  .pages a{font-size:16px}
+  .pages .num{width:26px;height:26px;font-size:13px}
+  @media(max-width:640px){.sn-label{display:none}.subnav .wrap{gap:0}.pages a{font-size:15px}}
+
+  /* keep the chatbot bubble visible on dark sections */
+  #chtl-chat-icon-container{border-radius:50%;box-shadow:0 0 0 3px #fff,0 10px 24px rgba(0,0,0,.28)}
+
+  /* three page tabs */
+  .pages a.ai:not([aria-current]){color:var(--blue-deep)}
+  @media(max-width:1060px){.pages .long{display:none}}
+  @media(max-width:520px){.nav-right{display:none}.pages a{padding:6px 10px 6px 6px;font-size:14px;gap:6px}.pages .num{width:22px;height:22px;font-size:12px}}
+
+  /* page 3 */
+  .p3hero{background:linear-gradient(135deg,#0A84FF 0%,#0050C8 100%);color:#DCEBFF;padding:44px 0 60px}
+  .p3hero h1{color:#fff;font-size:clamp(36px,5.2vw,56px);font-weight:800;margin:14px 0 18px;max-width:900px}
+  .p3hero .lead{color:#DCEBFF}
+  .p3hero .eyebrow{color:#FFE08A}
+  .p3hero .crumbs{color:#BFD8FF}
+  .p3hero .crumbs b{color:#FFE08A}
+  .p3hero .btn-primary{background:#fff;color:var(--blue-deep)}
+  .p3hero .btn-ghost{background:rgba(255,255,255,.16);color:#fff}
+  .p3hero .cta{margin-top:26px}
+  .levels{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .lv{font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff}
+  .lv i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:1px}
+  .try-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:24px;margin-top:36px;align-items:start}
+  @media(max-width:980px){.try-grid{grid-template-columns:1fr}}
+  .botcard{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 60px -34px rgba(33,53,78,.45);overflow:hidden}
+  .botcard .top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .botcard .top b{color:var(--ink);font-size:14px}
+  #chtl-inline-bot{width:100%;height:680px}
+  .howto{font-size:14px;color:var(--muted);padding:12px 18px;border-top:1px solid var(--line);background:var(--bg-soft)}
+  .samples{display:grid;gap:14px}
+  .sample{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+  .sample h3{font-size:16px;margin-bottom:4px}
+  .sample .what{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .sample pre{white-space:pre-wrap;font:500 13px/1.5 "SFMono-Regular",Consolas,"Courier New",monospace;color:var(--navy);background:var(--bg-soft);border-radius:12px;padding:12px;max-height:150px;overflow:auto}
+  .copy{margin-top:10px;border:0;cursor:pointer;font:600 14px Inter,system-ui,sans-serif;color:#fff;background:var(--blue);padding:9px 16px;border-radius:999px}
+  .copy.done{background:var(--green);color:var(--ink)}
+  .res{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  @media(max-width:980px){.res{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.res{grid-template-columns:1fr}}
+  .rcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
+  .rcard .who{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .rcard .av{width:42px;height:42px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-weight:800;display:grid;place-items:center}
+  .rcard h3{font-size:17px}
+  .rcard small{color:var(--muted);font-size:13px}
+  .rcard ul{list-style:none;display:grid;gap:6px;font-size:14px;color:var(--slate)}
+  .rcard li b{color:var(--ink);font-weight:600}
+  .rcard .flagline{margin-top:12px;font-size:13px;background:#FFF2D6;color:#7A4A00;border-radius:12px;padding:9px 12px}
+  .steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;counter-reset:s}
+  @media(max-width:980px){.steps4{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.steps4{grid-template-columns:1fr}}
+  .steps4 .card{position:relative;padding-top:30px}
+  .steps4 .card:before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:22px;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+  .legend{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+  @media(max-width:860px){.legend{grid-template-columns:1fr 1fr}}
+  .legend div{border-radius:16px;padding:14px 16px;font-size:14px;color:var(--slate);background:#fff;border:1px solid var(--line)}
+  .legend b{display:block;color:var(--ink);margin-bottom:2px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+  .built{margin-top:22px;font-size:14px;color:var(--slate);background:#fff;border:1px dashed #C9CED6;border-radius:16px;padding:14px 18px}
+</style>
+</head>
+<body>
+
+<nav aria-label="Site pages">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="CareMate home"><span class="mark"><span></span></span><span class="word">CareMate</span></a>
+    <div class="pages">
+      <a href="index.html"><span class="num">1</span>Home</a>
+      <a href="inside.html"><span class="num">2</span>Inside<span class="long">CareMate</span></a>
+      <a href="try.html" aria-current="page"><span class="num">3</span>Try<span class="long">CareMate</span><span>AI</span></a>
+    </div>
+    <div class="nav-right">
+      <a class="ask" href="#try" aria-label="Go to the CareMate AI assistant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg><span class="lbl">Ask CareMate</span></a>
+      <a class="btn btn-primary btn-proto" href="https://caremate-caregiver.netlify.app" target="_blank" rel="noopener">Try the prototype</a>
+    </div>
+  </div>
+</nav>
+<div class="subnav" aria-label="Sections on this page">
+  <div class="wrap"><span class="sn-label">On this page</span><div class="track"><a href="#try">Try it</a><a href="#residents">Residents</a><a href="#how-ai">How it works</a><a href="#limits">Limits and safety</a></div></div>
+</div>
+
+<header class="p3hero" id="top">
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Home</a><span>/</span><b>Try CareMate AI</b></div>
+    <div class="eyebrow">Page 3 &middot; Try CareMate AI</div>
+    <h1>Turn a messy shift note into a safe handoff.</h1>
+    <p class="lead">Paste a shift note about the six residents of Bluebonnet House, a fictional care home. CareMate AI compares it with each resident's normal, flags what needs a nurse now, writes the handoff for the next shift and drafts family updates for staff to review.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#try">Try it now &darr;</a>
+      <a class="btn btn-ghost" href="#residents">Meet the residents</a>
+    </div>
+    <div class="levels">
+      <span class="lv"><i style="background:#30D158"></i>Routine</span>
+      <span class="lv"><i style="background:#FFD60A"></i>Watch</span>
+      <span class="lv"><i style="background:#FF9F0A"></i>Notify nurse now</span>
+      <span class="lv"><i style="background:#FF453A"></i>Emergency</span>
+    </div>
+  </div>
+</header>
+
+<section id="try" style="padding-top:56px">
+  <div class="wrap">
+    <div class="eyebrow">Try it</div>
+    <h2>Paste a note. Get a handoff in seconds.</h2>
+    <p class="lead">Write your own note about any of the six residents, or copy a sample. Shorthand and typos are fine. Answers take about 20 seconds.</p>
+    <div class="try-grid">
+      <div class="botcard">
+        <div class="top"><b>CareMate AI &middot; shift handoff</b><span>Fictional residents only</span></div>
+        <div id="chtl-inline-bot"></div>
+        <div class="howto">Never paste real patient information. Every output is a draft for staff to check, not medical advice.</div>
+      </div>
+      <div class="samples" id="samples">
+        <div class="sample"><h3>Sample A: Busy night shift</h3><p class="what">Five residents, several care plan triggers and three family drafts.</p><pre id="s0">Night shift 11p-7a. Rose slept ok, up x2 to bathroom w walker, c/o hip pain 6/10 at 5am, nurse not told yet. Walter restless at 1am, found in hallway by the exit door, redirected back to bed w music. Dorothy wt this am 146, needed 2 pillows overnight, ankles puffier than usual. Samuel bs 64 before bfast, sweaty, gave juice, recheck 98. Frank turned q2h, red spot on tailbone didnt fade after 30 min.</pre><button class="copy" type="button" data-target="s0">Copy note</button></div>
+        <div class="sample"><h3>Sample B: Quiet day shift</h3><p class="what">Mostly routine. Watch for the one small change.</p><pre id="s1">Day shift 7a-3p. Rose walked to dining rm w walker, ate all of bfast, lunch about 75%, pain 2/10. Walter ate 50% lunch, did a puzzle, calm. Dorothy wt 142, 1 pillow, ate 75%. Samuel bs 132 before bfast, walked in garden. Helen ate 50% lunch, thickened liquids, no coughing. Frank turned q2h, skin intact.</pre><button class="copy" type="button" data-target="s1">Copy note</button></div>
+        <div class="sample"><h3>Sample C: One resident and a family call</h3><p class="what">A fever, low intake and a son asking for news.</p><pre id="s2">Helen hardly ate today, maybe 20% of bfast and lunch. Tremor looks a bit worse. Temp 100.6 at 2pm. Son Mark called asking how she is doing.</pre><button class="copy" type="button" data-target="s2">Copy note</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="residents">
+  <div class="wrap">
+    <div class="eyebrow">The residents</div>
+    <h2>Six residents, each with a baseline.</h2>
+    <p class="lead">CareMate AI reads these profiles from its knowledge base, so it knows what is normal for each person. All six are fictional.</p>
+    <div class="res">
+      <div class="rcard"><div class="who"><div class="av">RA</div><div><h3>Rose Alvarez</h3><small>Room 12 · 84</small></div></div>
+        <ul><li>Hip replacement six weeks ago, uses a walker</li><li>Eats 75 to 100% of meals</li><li>Morning hip pain about 2/10</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Pain 5/10 or more, new confusion, refuses walker, any fall</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Son Daniel: text on Fridays, call after a fall</li></ul>
+      </div>
+      <div class="rcard"><div class="who"><div class="av">WK</div><div><h3>Walter Kim</h3><small>Room 7 · 79</small></div></div>
+        <ul><li>Early-stage dementia, walks on his own</li><li>Restless 5 to 7 PM, calmed by 1950s music</li><li>Sleeps through the night after 9 PM</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Near an exit door, aggression, eats under 25% twice, any fall</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Daughter Grace: call after any incident</li></ul>
+      </div>
+      <div class="rcard"><div class="who"><div class="av">DH</div><div><h3>Dorothy Hughes</h3><small>Room 3 · 91</small></div></div>
+        <ul><li>Heart failure, daily weight before breakfast</li><li>Baseline weight 142 lb, sleeps with one pillow</li><li>Fluid limit 1.5 liters a day</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Up 2 lb in a day or 5 lb in a week, new breathlessness, more pillows, worse swelling, weight not taken</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Niece Paula: weekly email</li></ul>
+      </div>
+      <div class="rcard"><div class="who"><div class="av">SO</div><div><h3>Samuel Okoro</h3><small>Room 15 · 75</small></div></div>
+        <ul><li>Type 2 diabetes, sugar checked before breakfast and dinner</li><li>Usual blood sugar 110 to 160</li><li>Never skips breakfast</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Sugar under 70 or over 300, sweaty, shaky or confused, skips a meal after tablets</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Wife Ada: in person at her 3 PM visit</li></ul>
+      </div>
+      <div class="rcard"><div class="who"><div class="av">HB</div><div><h3>Helen Brooks</h3><small>Room 9 · 88</small></div></div>
+        <ul><li>Parkinson&#x27;s disease, walks with one staff member</li><li>Soft diet, thickened liquids only</li><li>Mild right-hand tremor is normal for her</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Coughing or choking with meals, thin liquids given, temp 100.4 F or more, eats under 25%, any fall</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Son Mark: phone call on Sundays</li></ul>
+      </div>
+      <div class="rcard"><div class="who"><div class="av">FD</div><div><h3>Frank Delgado</h3><small>Room 4 · 82</small></div></div>
+        <ul><li>Moderate dementia, eats 75% with help</li><li>Reposition every 2 hours in bed</li><li>Skin intact at baseline</li></ul>
+        <div class="flagline"><b>Notify nurse if:</b> Red area that does not fade in 30 minutes, open skin, refuses repositioning, fever</div>
+        <ul style="margin-top:10px"><li><b>Family:</b> Daughter Lucia: same day for any skin problem</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-ai">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>Grounded in each resident's normal.</h2>
+    <p class="lead">A generic chatbot would only reword the note. CareMate AI checks every line against the resident's own baseline and care plan before it writes anything.</p>
+    <div class="steps4">
+      <div class="card"><h3>Read the note</h3><p>Handles shorthand like "bs", "q2h" and "c/o", typos and several residents in one note.</p></div>
+      <div class="card"><h3>Find the baseline</h3><p>Matches each name to a resident profile in the knowledge base and pulls their normal and care plan triggers.</p></div>
+      <div class="card"><h3>Grade each change</h3><p>Sorts every change into Routine, Watch, Notify nurse now or Emergency, and flags required checks that are missing.</p></div>
+      <div class="card"><h3>Write the outputs</h3><p>An SBAR handoff for the next shift, a list of what needs attention now and family drafts that match each family's wishes.</p></div>
+    </div>
+    <div class="legend">
+      <div><b><i style="background:#30D158"></i>Routine</b>Same as the resident's baseline.</div>
+      <div><b><i style="background:#FFD60A"></i>Watch</b>A small change. The next shift rechecks.</div>
+      <div><b><i style="background:#FF9F0A"></i>Notify nurse now</b>A care plan trigger, a fall, new confusion or a missing check.</div>
+      <div><b><i style="background:#FF453A"></i>Emergency</b>Follow the emergency policy and call 911.</div>
+    </div>
+    <p class="built"><b>How we built it:</b> an AI agent in Chatling, grounded in a knowledge base we wrote: six resident profiles, an SBAR handoff standard with four change levels and a family update guide. Its instructions set the output format and the safety rules below.</p>
+  </div>
+</section>
+
+<section class="soft" id="limits">
+  <div class="wrap">
+    <div class="eyebrow">Limits and safety</div>
+    <h2>A draft for staff, never a decision.</h2>
+    <div class="two">
+      <div class="panel"><h3>What it does</h3><ul><li>Turns a free-text note into a structured handoff</li><li>Compares each change with the resident's baseline</li><li>Flags care plan triggers and missing checks</li><li>Drafts family updates in plain, warm language</li></ul></div>
+      <div class="panel server"><h3>What it does not do</h3><ul><li>Diagnose, suggest medicines or change a care plan</li><li>Use or store real resident information</li><li>Send anything to families on its own</li><li>Replace the nurse's judgment</li></ul></div>
+    </div>
+    <p class="src">This demo runs on a free plan with a limited number of answers each month. If it stops replying, please try again later.</p>
+  </div>
+</section>
+
+<section style="padding-top:0" class="soft">
+  <div class="wrap">
+    <div class="band">
+      <div>
+        <h2>Help us test CareMate AI.</h2>
+        <p>We are running a short pilot with caregivers and nursing students. If you work in care and can spare 15 minutes, email <a href="mailto:hliaqat@smu.edu?subject=CareMate%20AI%20pilot" style="color:#fff;text-decoration:underline">hliaqat@smu.edu</a>.</p>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="mailto:hliaqat@smu.edu?subject=CareMate%20AI%20pilot">Join the pilot</a>
+        <a class="btn btn-ghost" href="index.html#pilot">Request a care home pilot</a>
+      </div>
+    </div>
+    <div class="prevnext">
+      <a href="inside.html"><small>&larr; Previous page</small>Page 2: Inside CareMate</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo"><span class="mark"><span></span></span>CareMate</div>
+    <p>So no one who lives alone goes unseen.</p>
+    <p>CareMate is an early-stage prototype. Its readings are wellness signals, not medical measurements, and it does not replace professional care. In an emergency, call 911. Margaret and Sarah are illustrative personas.</p>
+    <p>Contact: <a href="mailto:hliaqat@smu.edu" style="text-decoration:underline">hliaqat@smu.edu</a></p>
+    <p>&copy; 2026 CareMate</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click', function(){
+    var t = document.getElementById(b.dataset.target).innerText;
+    var done = function(){ b.textContent = 'Copied. Paste it in the chat'; b.classList.add('done'); setTimeout(function(){ b.textContent = 'Copy note'; b.classList.remove('done'); }, 2500); };
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(done, function(){}); }
+    else { var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch(e){} document.body.removeChild(a); }
+  });
+});
+</script>
+<script>
+(function(){
+  var track = document.querySelector('.subnav .track'); if (!track) return;
+  var links = [].slice.call(track.querySelectorAll('a')), map = {};
+  links.forEach(function(a){ var s = document.getElementById(a.getAttribute('href').slice(1)); if (s) map[s.id] = a; });
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var a = map[e.target.id]; if (!a) return;
+      links.forEach(function(l){ l.classList.remove('on'); l.removeAttribute('aria-current'); });
+      a.classList.add('on'); a.setAttribute('aria-current', 'true');
+      if (track.scrollWidth > track.clientWidth) track.scrollTo({ left: a.offsetLeft - track.offsetLeft - 24, behavior: 'smooth' });
+    });
+  }, { rootMargin: '-35% 0px -60% 0px' });
+  Object.keys(map).forEach(function(id){ io.observe(document.getElementById(id)); });
+})();
+</script>
+<!-- CareMate AI shift handoff assistant (Chatling, inline) -->
+<script> window.chtlConfig = { chatbotId: "2371516761", display: "page_inline" } </script>
+<script async data-id="2371516761" data-display="page_inline" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+</body>
+</html>
