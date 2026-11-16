@@ -257,6 +257,20 @@
   .prevnext a{flex:1 1 260px;display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 20px;color:var(--ink);font-weight:700}
   .prevnext a small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
   .prevnext a:hover{border-color:var(--blue)}
+
+  /* section tabs: smaller, sticky, under the page tabs */
+  .subnav{position:sticky;top:65px;z-index:19;background:rgba(250,250,252,.96);border-bottom:1px solid var(--line)}
+  .subnav .wrap{display:flex;align-items:center;gap:18px;height:44px}
+  .sn-label{flex:none;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .subnav .track{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;height:100%;align-items:stretch}
+  .subnav .track::-webkit-scrollbar{display:none}
+  .subnav .track a{flex:none;display:flex;align-items:center;padding:0 12px;font:600 13.5px/1 Inter,system-ui,sans-serif;letter-spacing:.02em;color:var(--slate);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+  .subnav .track a:hover{color:var(--blue)}
+  .subnav .track a.on{color:var(--blue);border-bottom-color:var(--blue);background:rgba(10,132,255,.06)}
+  section[id],header[id]{scroll-margin-top:117px}
+  .pages a{font-size:16px}
+  .pages .num{width:26px;height:26px;font-size:13px}
+  @media(max-width:640px){.sn-label{display:none}.subnav .wrap{gap:0}.pages a{font-size:15px}}
 </style>
 </head>
 <body>
@@ -274,6 +288,9 @@
     </div>
   </div>
 </nav>
+<div class="subnav" aria-label="Sections on this page">
+  <div class="wrap"><span class="sn-label">On this page</span><div class="track"><a href="#inside">From frame to conversation</a><a href="#pulse">Pulse from a camera</a><a href="#pilot">The 90-day pilot</a><a href="#measures">What we measure</a><a href="#different">Why it is different</a></div></div>
+</div>
 
 <header class="sub" id="top">
   <div class="wrap">
@@ -285,7 +302,6 @@
       <a class="btn btn-ghost" href="index.html">&larr; Back to home</a>
       <a class="btn btn-primary" href="https://caremate-caregiver.netlify.app" target="_blank" rel="noopener">Try the live prototype</a>
     </div>
-    <div class="onpage"><span>On this page</span><a href="#inside">From frame to conversation</a><a href="#pulse">Pulse from a camera</a><a href="#pilot">The 90-day pilot</a><a href="#measures">What we measure</a><a href="#different">Why it is different</a></div>
   </div>
 </header>
 
@@ -435,5 +451,23 @@
 <!-- CareMate Assistant chatbot (Chatling) -->
 <script> window.chtlConfig = { chatbotId: "7254892414" } </script>
 <script async data-id="7254892414" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+<script>
+(function(){
+  var track = document.querySelector('.subnav .track'); if (!track) return;
+  var links = [].slice.call(track.querySelectorAll('a')), map = {};
+  links.forEach(function(a){ var s = document.getElementById(a.getAttribute('href').slice(1)); if (s) map[s.id] = a; });
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var a = map[e.target.id]; if (!a) return;
+      links.forEach(function(l){ l.classList.remove('on'); l.removeAttribute('aria-current'); });
+      a.classList.add('on'); a.setAttribute('aria-current', 'true');
+      if (track.scrollWidth > track.clientWidth) track.scrollTo({ left: a.offsetLeft - track.offsetLeft - 24, behavior: 'smooth' });
+    });
+  }, { rootMargin: '-35% 0px -60% 0px' });
+  Object.keys(map).forEach(function(id){ io.observe(document.getElementById(id)); });
+})();
+</script>
 </body>
 </html>
